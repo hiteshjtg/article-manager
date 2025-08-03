@@ -1,42 +1,60 @@
-# See https://docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
+#──────────────────────────────────────────────────────────────────────────────
+# Environment variable files (often contain secrets)
+.env
+.env.*.local
 
-# Compiled output
-/dist
-/tmp
-/out-tsc
-/bazel-out
+# TypeScript build info (speeds up incremental builds)
+*.tsbuildinfo
 
-# Node
-/node_modules
-npm-debug.log
-yarn-error.log
+# Angular CLI cache & build artifacts
+.angular
+.angular/cache
+.angular/build
 
-# IDEs and editors
-.idea/
-.project
-.classpath
-.c9/
-*.launch
-.settings/
-*.sublime-workspace
+# Functions (if you’re using Firebase Cloud Functions)
+functions/node_modules/
+functions/lib/
+functions/dist/
 
-# Visual Studio Code
-.vscode/*
+# Logs (more exhaustive)
+logs/
+*.log*
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS‐generated files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Icon?
+
+# Editor/IDE swap & backup files
+*~
+*.swp
+*.swo
+*.orig
+
+# Temporary files
+*.tmp
+*.temp
+
+# Coverage reports (if you run tests)
+coverage/
+
+# Misc tooling
+.vscode/
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
-.history/*
 
-# Miscellaneous
-/.angular/cache
-.sass-cache/
-/connect.lock
-/coverage
-/libpeerconnection.log
-testem.log
-/typings
+# Husky hook backups (if installed)
+.husky/_/
 
-# System files
-.DS_Store
-Thumbs.db
+# Yarn v2/v3
+.yarn/*
+.pnp.*
+
+#nodemodules not required
+node_modules

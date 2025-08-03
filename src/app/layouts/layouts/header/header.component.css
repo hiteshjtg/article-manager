@@ -1,0 +1,56 @@
+.medium-navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fff;
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid #ddd;
+  font-family: "Helvetica Neue", sans-serif;
+}
+
+.nav-left,
+.nav-right {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  height: 32px;
+  margin-right: 1rem;
+}
+
+.nav-link {
+  margin-right: 1rem;
+  text-decoration: none;
+  color: #242424;
+  font-weight: 500;
+}
+
+.nav-link:hover {
+  color: #000;
+}
+
+.nav-icon {
+  font-size: 1.2rem;
+  margin-right: 1rem;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.user-icon {
+  height: 32px;
+  width: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+/* Material CSS */
+.example-form {
+  min-width: 150px;
+  max-width: 500px;
+  width: 100%;
+}
+
+.example-full-width {
+  width: 100%;
+}
