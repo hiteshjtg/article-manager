@@ -1,0 +1,40 @@
+<h2>Add Article</h2>
+
+<form #articleForm="ngForm" (ngSubmit)="submitForm(articleForm)">
+
+  <mat-form-field class="full-width">
+    <mat-label>Title</mat-label>
+    <input matInput name="title" [(ngModel)]="article.title" required>
+  </mat-form-field>
+
+  <mat-form-field class="full-width">
+    <mat-label>Short Description</mat-label>
+    <input matInput name="shortDescription" [(ngModel)]="article.shortDescription" required>
+  </mat-form-field>
+
+  <mat-form-field class="full-width">
+    <mat-label>Author Name</mat-label>
+    <input matInput name="authorName" [(ngModel)]="article.authorName" required>
+  </mat-form-field>
+
+  <mat-form-field class="full-width">
+    <mat-label>Article Image URL</mat-label>
+    <input matInput name="articleImageUrl" [(ngModel)]="article.articleImageUrl">
+  </mat-form-field>
+
+  <mat-form-field class="full-width">
+  <mat-label>Tags (comma separated)</mat-label>
+  <input matInput name="tags" (input)="onTagsInput($event)">
+</mat-form-field>
+
+
+  <mat-form-field class="full-width">
+    <mat-label>Description</mat-label>
+    <textarea matInput name="description" [(ngModel)]="article.description" required></textarea>
+  </mat-form-field>
+
+  <div class="actions">
+    <button mat-raised-button color="primary" type="submit">Save</button>
+    <button mat-button color="warn" type="button" (click)="closeDrawerFunction()">Cancel</button>
+  </div>
+</form>

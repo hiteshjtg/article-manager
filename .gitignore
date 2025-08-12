@@ -1,0 +1,60 @@
+#──────────────────────────────────────────────────────────────────────────────
+# Environment variable files (often contain secrets)
+.env
+.env.*.local
+
+# TypeScript build info (speeds up incremental builds)
+*.tsbuildinfo
+
+# Angular CLI cache & build artifacts
+.angular
+.angular/cache
+.angular/build
+
+# Functions (if you’re using Firebase Cloud Functions)
+functions/node_modules/
+functions/lib/
+functions/dist/
+
+# Logs (more exhaustive)
+logs/
+*.log*
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS‐generated files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Icon?
+
+# Editor/IDE swap & backup files
+*~
+*.swp
+*.swo
+*.orig
+
+# Temporary files
+*.tmp
+*.temp
+
+# Coverage reports (if you run tests)
+coverage/
+
+# Misc tooling
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# Husky hook backups (if installed)
+.husky/_/
+
+# Yarn v2/v3
+.yarn/*
+.pnp.*
+
+#nodemodules not required
+node_modules

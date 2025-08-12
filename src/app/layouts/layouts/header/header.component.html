@@ -1,0 +1,19 @@
+<nav class="medium-navbar">
+  <div class="nav-left">
+    <img
+      src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Medium_%28website%29_logo.svg/1920px-Medium_%28website%29_logo.svg.png?20210818085543"
+      alt="Logo"
+      class="logo"
+    />
+  </div>
+
+  <div class="nav-right">
+    <button *ngIf="isUserLoggedIn()" (click)="goToDashboard()">
+      <img
+        src="https://static.vecteezy.com/system/resources/thumbnails/002/318/271/small/user-profile-icon-free-vector.jpg"
+        alt="User Icon"
+        class="user-icon"
+      />
+    </button>
+  </div>
+</nav>

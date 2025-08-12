@@ -1,0 +1,60 @@
+.signup-form {
+  max-width: 420px;
+  margin: 3rem auto;
+}
+
+mat-card {
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+mat-card-title {
+  font-size: 24px;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+mat-card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+mat-error {
+  font-size: 12px;
+  margin-top: 4px;
+  color: #d32f2f;
+  display: block;
+}
+
+mat-card-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+button[type='submit'] {
+  width: 100%;
+}
+
+.response-error {
+  color: #d32f2f;
+  font-size: 14px;
+  text-align: center;
+}
+
+.auth-switch {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
