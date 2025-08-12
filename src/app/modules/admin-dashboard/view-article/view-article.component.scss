@@ -1,0 +1,70 @@
+.article-container {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 24px;
+  background-color: white;
+  color: black;
+  font-family: 'Georgia', serif;
+  border: 1px solid #e0e0e0;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  border-radius: 8px;
+}
+
+.article-image {
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
+  object-fit: cover;
+  margin-bottom: 20px;
+}
+
+.article-title {
+  font-size: 32px;
+  font-weight: bold;
+  margin: 0 0 12px 0;
+}
+
+.article-author {
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+  margin: 0 0 6px 0;
+}
+
+.article-date {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 24px;
+}
+
+.article-description {
+  font-size: 18px;
+  line-height: 1.6;
+  white-space: pre-wrap; /* preserve formatting */
+}
+
+.loading,
+.no-article {
+  text-align: center;
+  margin-top: 50px;
+  font-size: 20px;
+  color: #888;
+}
+
+.edit-button {
+  background-color: #4caf50; /* Green background */
+  border: none;
+  border-radius: 6px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 28px; /* Larger icon */
+  color: white; /* White icon color */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease;
+}
+
+.edit-button:hover {
+  background-color: #388e3c; /* Darker green on hover */
+}

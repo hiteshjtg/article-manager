@@ -10,6 +10,6 @@ import { FormsModule } from '@angular/forms';
 @NgModule({
   declarations: [HeaderComponent, FooterComponent],
   imports: [FormsModule, MatFormFieldModule, MatInputModule, CommonModule],
-  exports: [HeaderComponent],
+  exports: [HeaderComponent, FooterComponent],
 })
 export class LayoutsModule {}

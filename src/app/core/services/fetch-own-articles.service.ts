@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+
 import {
   Firestore,
   collection,
@@ -7,19 +8,38 @@ import {
   DocumentData,
   Timestamp,
 } from '@angular/fire/firestore';
+
+
 import { Article } from '../../models/articles';
+import { where, query} from 'firebase/firestore';
+import { AuthserviceService } from './auth.service';
 
-@Injectable({
-  providedIn: 'root',
-})
-export class ArticlesFetchServiceService {
-  constructor(private firestore: Firestore) {}
 
-  async getArticles(): Promise<Article[]> {
+  @Injectable({
+    providedIn: 'root',
+  })
+  
+  export class FetchOwnArticlesService {
+    constructor(
+      private firestore: Firestore,
+      private authService: AuthserviceService,
+    ) {}
+
+
+  async getArticles(): Promise<Article[]> { //fetching of articles with authorization, i.e. specific User Id.
+    const userId = this.authService.getUserIdFromToken();
+    if (!userId) {
+      console.error('User ID not found in token.');
+      return [];
+    }
+
     try {
-      const articlesCollection = collection(this.firestore, 'articles');
-      const querySnapshot: QuerySnapshot<DocumentData> =
-        await getDocs(articlesCollection);
+      const q = query(
+        collection(this.firestore, 'articles'),
+        where('uid', '==', userId),
+      );
+
+      const querySnapshot: QuerySnapshot<DocumentData> = await getDocs(q);
 
       return querySnapshot.docs.map((doc) => {
         const data = doc.data();
@@ -30,9 +50,12 @@ export class ArticlesFetchServiceService {
 
         return {
           id: doc.id,
+          uid: data['uid'],
+          title: data['title'],
           articleImageUrl: data['articleImageUrl'],
           shortDescription: data['shortDescription'],
           authorName: data['authorName'],
+          description: data['description'],
           tags,
           lastModifiedDate,
         } as Article;

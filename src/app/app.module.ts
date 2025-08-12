@@ -15,6 +15,11 @@ import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { FireModuleModule } from './shared/fire-module/fire-module.module';
 import { getAuth, provideAuth } from '@angular/fire/auth';
 import { environment } from '../environments/environment';
+import { AdminDashboardModule } from './modules/admin-dashboard/admin-dashboard.module';
+import { AgGridModule } from 'ag-grid-angular';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { SharedModule } from "./shared/shared.module";
+
 
 @NgModule({
   declarations: [AppComponent],
@@ -25,7 +30,11 @@ import { environment } from '../environments/environment';
     LayoutsModule,
     AuthModuleModule,
     FireModuleModule,
-  ],
+    AdminDashboardModule,
+    AgGridModule,
+    BrowserAnimationsModule,
+    SharedModule
+],
   providers: [
     provideClientHydration(),
     provideFirebaseApp(() => initializeApp(environment.firebase)),
