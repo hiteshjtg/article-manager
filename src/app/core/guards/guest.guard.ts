@@ -2,6 +2,7 @@ import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 
 
+
 const isTokenExpired = (token: string): boolean => {
   try {
     const payloadBase64 = token.split('.')[1];
@@ -19,30 +20,21 @@ const isTokenExpired = (token: string): boolean => {
 
     return expirationTimeInSeconds * 1000 < Date.now();
   } catch (error) {
-    console.error('Error decoding token:', error);
     return true;
   }
 };
 
 
-export const authGuard: CanActivateFn = (route, state) => {
+
+export const guestGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
- 
-  if (typeof window === 'undefined') { //for fixing local storage not defined error during SSR
-    router.navigate(['/signin']);
-    return false;
-  }
 
   const userToken = localStorage.getItem('userToken');
 
-  if (!userToken) {
-    router.navigate(['/signin']);
-    return false;
-  }
+  const isLoggedIn = userToken && !isTokenExpired(userToken);
 
-  if (isTokenExpired(userToken)) {
-    localStorage.removeItem('userToken');
-    router.navigate(['/signin']);
+  if (isLoggedIn) {
+    router.navigate(['/home']);
     return false;
   }
 

@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-sign-up',
   templateUrl: './sign-up.component.html',
-  styleUrls: ['./sign-up.component.css'],
+  styleUrls: ['./sign-up.component.scss'],
 })
 export class SignUpComponent {
   responseMsg = '';
@@ -38,4 +38,9 @@ export class SignUpComponent {
         });
     }
   }
+
+  GoSignIn(){ //just for redirection
+    this.router.navigate(['/signin'])
+  }
+
 }

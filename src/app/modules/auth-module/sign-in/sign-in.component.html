@@ -42,8 +42,10 @@
       Login
     </button>
 
-    <p style="color: red">{{ responseMsg }}</p>
+    <p class="response-error">{{ responseMsg }}</p>
   </form>
-
-  <span>Don't have an account?</span> <a href="/signup">Sign Up</a>
+    <div class="signup-section">
+      <span>Don't have an account?</span>
+      <button mat-button color="primary" (click)="GoSignUp()">Sign Up</button>
+    </div>
 </mat-card>

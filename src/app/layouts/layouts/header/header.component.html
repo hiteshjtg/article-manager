@@ -5,19 +5,15 @@
       alt="Logo"
       class="logo"
     />
-
-    <form class="example-form">
-      <mat-form-field class="example-full-width">
-        <mat-label>Search Articles</mat-label>
-        <input matInput placeholder="Ex. Angular" value="" />
-      </mat-form-field>
-    </form>
   </div>
+
   <div class="nav-right">
-    <img
-      src="https://static.vecteezy.com/system/resources/thumbnails/002/318/271/small/user-profile-icon-free-vector.jpg"
-      alt="User Icon"
-      class="user-icon"
-    />
+    <button *ngIf="isUserLoggedIn()" (click)="goToDashboard()">
+      <img
+        src="https://static.vecteezy.com/system/resources/thumbnails/002/318/271/small/user-profile-icon-free-vector.jpg"
+        alt="User Icon"
+        class="user-icon"
+      />
+    </button>
   </div>
 </nav>

@@ -4,5 +4,8 @@ export interface Article {
   shortDescription: string;
   authorName: string;
   lastModifiedDate: Date;
+  description: string;
+  title: string;
   tags: string[];
+  uid : string;
 }

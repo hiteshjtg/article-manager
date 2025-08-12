@@ -5,6 +5,7 @@ import { Firestore, doc, setDoc } from '@angular/fire/firestore';
 @Injectable({
   providedIn: 'root',
 })
+
 export class AuthserviceService {
   constructor(
     private auth: AngularFireAuth,
@@ -86,5 +87,18 @@ export class AuthserviceService {
           reject(errorMessage);
         });
     });
+  }
+
+  public getUserIdFromToken(): string | null {
+    const token = localStorage.getItem('userToken');
+    if (!token) return null;
+
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      return payload.user_id || payload.userId || payload.uid || null;
+    } catch (error) {
+      console.error('Error decoding token:', error);
+      return null;
+    }
   }
 }

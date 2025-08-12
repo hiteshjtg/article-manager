@@ -1,6 +1,16 @@
-<div class="card-container">
+<app-spinner *ngIf="isLoading"></app-spinner>
+
+
+<div class="card-container" *ngIf="!isLoading">
   <app-article-card
-    *ngFor="let article of articles"
+    *ngFor="let article of paginatedArticles"
     [article]="article"
   ></app-article-card>
 </div>
+
+
+<app-paginator *ngIf="!isLoading"
+  [totalItems]="totalItems"
+  [currentPage]="currentPage"
+  (pageChange)="onPageChange($event)">
+</app-paginator>
