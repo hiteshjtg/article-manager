@@ -1,0 +1,23 @@
+.signup-form {
+  max-width: 400px;
+  margin: 2rem auto;
+}
+
+.signup-form mat-form-field {
+  width: 100%;
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.signup-form mat-card {
+  padding: 1rem;
+}
+
+.signup-form mat-card-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.signup-form mat-card-actions {
+  padding-top: 1rem;
+}

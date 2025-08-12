@@ -1,28 +1,24 @@
 # Medium2
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.17.
+This is a simple web application built with Angular and Firebase. It features user authentication (sign-up and sign-in) and a homepage that displays articles from a Firestore database.
 
-## Development server
+Features
+    User Authentication
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+        User registration with email and password.
 
-## Code scaffolding
+        User sign-in.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+        Automatic login after a successful registration.
 
-## Build
+        Session management using tokens stored in localStorage.
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+        User-friendly error messages for common issues (e.g., email in use, invalid credentials).
 
-## Running unit tests
+    Article Display
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+        Fetches a list of articles from a Firestore collection.
 
-## Running end-to-end tests
+        Displays articles in a clean, card-based layout using Angular Material.
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
-# article-manager
+        Handles and correctly formats complex data from Firestore, including Timestamp dates and tags stored as a JSON string.
