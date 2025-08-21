@@ -1,42 +1,25 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
+import { firstValueFrom, map } from 'rxjs';
+import { AuthserviceService } from '../services/auth.service';
 
+export const guestGuard: CanActivateFn = async (route, state) => {
+  const router = inject(Router);
+  const authService = inject(AuthserviceService);
 
-
-const isTokenExpired = (token: string): boolean => {
   try {
-    const payloadBase64 = token.split('.')[1];
+    const userId = await firstValueFrom(authService.getUserId$().pipe(
+      map(id => id)
+    ));
 
-    if (!payloadBase64) {
-      return true;
+    if (userId) {
+      router.navigate(['/home']);
+      return false;
     }
 
-    const decodedPayload = JSON.parse(atob(payloadBase64));
-
-    const expirationTimeInSeconds = decodedPayload.exp;
-    if (!expirationTimeInSeconds) {
-      return true;
-    }
-
-    return expirationTimeInSeconds * 1000 < Date.now();
+    return true;
   } catch (error) {
+    console.error('Error checking guest access:', error);
     return true;
   }
-};
-
-
-
-export const guestGuard: CanActivateFn = (route, state) => {
-  const router = inject(Router);
-
-  const userToken = localStorage.getItem('userToken');
-
-  const isLoggedIn = userToken && !isTokenExpired(userToken);
-
-  if (isLoggedIn) {
-    router.navigate(['/home']);
-    return false;
-  }
-
-  return true;
 };

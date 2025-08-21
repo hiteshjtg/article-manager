@@ -1,7 +1,12 @@
-import { Component, Input } from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { ArticlesService } from '../../../core/services/article.service';
 import { Router } from '@angular/router';
+import { firstValueFrom } from 'rxjs';
+import { AuthserviceService } from '../../../core/services/auth.service';
+import { ArticlesStateService } from '../../../core/state/articles/articles-state.service';
+import { Article } from '../../../models/articles';
+
+declare var Quill: any;
 
 @Component({
   selector: 'app-create-article',
@@ -9,83 +14,123 @@ import { Router } from '@angular/router';
   styleUrl: './create-article.component.scss'
 })
 
+export class CreateArticleComponent implements AfterViewInit, OnInit {
 
-export class CreateArticleComponent {
+  @Input() closeDrawerFunction!: () => void;
 
-  @Input() closeDrawerFunction !: () => void
-
-  article = {
+  article: Partial<Article> = {
     title: '',
     description: '',
     shortDescription: '',
     authorName: '',
     articleImageUrl: '',
-    tags: [] as string[],
+    tags: [],
   };
 
+  quillEditor: any;
+  currentTags: string[] = [];
+  isSubmitting = false;
+
   constructor(
-    private articleService: ArticlesService,
-    private router: Router,
+    private authService: AuthserviceService,
+    private articlesState: ArticlesStateService,
+    private router: Router
   ) {}
 
-  private getUserIdFromToken(): string | null {
-    const token = localStorage.getItem('userToken');
-    if (!token) return null;
+  ngOnInit() {
+    this.article.tags = this.currentTags;
+  }
 
-    try {
-      const payload = JSON.parse(atob(token.split('.')[1]));
-      return payload.user_id || payload.userId || payload.uid || null;
-    } catch (error) {
-      console.error('Error decoding token:', error);
-      return null;
+  ngAfterViewInit(): void {
+    this.initializeQuillEditor();
+  }
+
+  private initializeQuillEditor(): void {
+    const editorEl = document.getElementById('quill-editor');
+    if (!editorEl || typeof Quill === 'undefined') {
+      console.error('Quill editor element not found or Quill library not loaded');
+      return;
     }
+
+    this.quillEditor = new Quill(editorEl, {
+      theme: 'snow',
+      placeholder: 'Enter detailed article description...',
+      modules: {
+        toolbar: [
+          ['bold', 'italic', 'underline', 'strike'],
+          [{ 'header': [1, 2, 3, false] }],
+          [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+          ['blockquote', 'code-block'],
+          ['link', 'image'],
+          ['clean']
+        ]
+      }
+    });
+
+    this.quillEditor.on('text-change', () => {
+      this.article.description = this.quillEditor.root.innerHTML;
+    });
   }
 
 
+  addTag(tagInput: HTMLInputElement) {
+    const tag = tagInput.value.trim();
+    if (tag && !this.currentTags.includes(tag)) {
+      this.currentTags.push(tag);
+    }
+    tagInput.value = '';
+    this.article.tags = this.currentTags;
+  }
+
+  removeTag(tag: string) {
+    this.currentTags = this.currentTags.filter(t => t !== tag);
+    this.article.tags = this.currentTags;
+  }
 
   async submitForm(form: NgForm) {
     if (form.invalid) return;
 
-    const uid = this.getUserIdFromToken();
-    
-    if (!uid) {
-      console.error('User ID not found in token');
-      return;
-    }
-
     try {
-      await this.articleService.addArticle(
+      this.isSubmitting = true;
+
+      const uid = await firstValueFrom(this.authService.getUserId$());
+      if (!uid) {
+        console.error('User not logged in');
+        this.isSubmitting = false;
+        return;
+      }
+
+      const newArticle: Article = {
+        id: '',
         uid,
-        this.article.title,
-        this.article.description,
-        this.article.shortDescription,
-        this.article.authorName,
-        this.article.articleImageUrl,
-        this.article.tags,
-        new Date().toISOString()
-      );
+        title: this.article.title || '',
+        description: this.article.description || '',
+        shortDescription: this.article.shortDescription || '',
+        authorName: this.article.authorName || '',
+        articleImageUrl: this.article.articleImageUrl || '',
+        tags: this.currentTags,
+        lastModifiedDate: new Date()
+      };
+
+      await this.articlesState.addArticle(newArticle);
+      await this.articlesState.loadArticles();
+
       console.log('Article added successfully');
       form.resetForm();
+      this.currentTags = [];
 
+      if (this.quillEditor) {
+        try { this.quillEditor.setContents([]); } catch { this.quillEditor.setText(''); }
+      }
 
-      this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => { //FR
-        this.router.navigate(['/dashboard']);
-      });
+      if (this.closeDrawerFunction) {
+        try { this.closeDrawerFunction(); } catch {}
+      }
 
     } catch (error) {
       console.error('Error adding article:', error);
+    } finally {
+      this.isSubmitting = false;
     }
   }
-
-
-
-
-  onTagsInput(event: Event) {
-    const value = (event.target as HTMLInputElement).value;
-    this.article.tags = value
-      .split(',')
-      .map(tag => tag.trim())
-      .filter(tag => tag.length > 0);
-  }
-
 }

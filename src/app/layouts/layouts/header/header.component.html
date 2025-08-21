@@ -1,19 +1,27 @@
 <nav class="medium-navbar">
   <div class="nav-left">
+    <button class="button-no-border" (click)="goToHome()">
     <img
-      src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Medium_%28website%29_logo.svg/1920px-Medium_%28website%29_logo.svg.png?20210818085543"
+      src="assets/images/medium_logo.png"
       alt="Logo"
       class="logo"
     />
+    </button>
   </div>
 
   <div class="nav-right">
-    <button *ngIf="isUserLoggedIn()" (click)="goToDashboard()">
+    <button class="button-no-border" *ngIf="isUserLoggedIn$ | async" (click)="goToDashboard()">
+
       <img
-        src="https://static.vecteezy.com/system/resources/thumbnails/002/318/271/small/user-profile-icon-free-vector.jpg"
+        src="assets/images/user_dashboard_logo.jpg"
         alt="User Icon"
         class="user-icon"
       />
     </button>
+
+    <button class="material-symbols-outlined button-no-border" (click)="logout()" *ngIf="isUserLoggedIn$ | async">
+      logout
+    </button>
+
   </div>
 </nav>

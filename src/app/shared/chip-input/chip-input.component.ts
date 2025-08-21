@@ -1,4 +1,4 @@
-import {Component, inject, Output, EventEmitter} from '@angular/core';
+import {Component, inject, Output, EventEmitter, Input} from '@angular/core';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {MatChipEditedEvent, MatChipInputEvent} from '@angular/material/chips';
 import {LiveAnnouncer} from '@angular/cdk/a11y';
@@ -12,11 +12,10 @@ import {LiveAnnouncer} from '@angular/cdk/a11y';
 
 export class ChipInputComponent {
     @Output() newTagEvent = new EventEmitter<string[]>(); //Output' accepts too few arguments to be used as a decorator here. Did you mean to call it first and write '@Output()'?ts(1329)
-
+    @Input() tags!: string[]
 
     addOnBlur = true;
     readonly separatorKeysCodes = [ENTER, COMMA] as const;
-    tags: string[] = [];
 
     announcer = inject(LiveAnnouncer);
 

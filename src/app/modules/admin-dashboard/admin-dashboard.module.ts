@@ -13,8 +13,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { EditArticleComponent } from './edit-article-drawer/edit-article.component';
 import { MatIconModule } from '@angular/material/icon';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'; // Added for mat-spinner
-
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatChip } from "@angular/material/chips";
+import { AdminDashboardRoutingModule } from './admin-dashboard-routing.module';
 
 @NgModule({
   declarations: [
@@ -23,9 +24,9 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'; /
     CreateArticleComponent,
     EditArticleComponent
   ],
-
   imports: [
     CommonModule,
+    AdminDashboardRoutingModule,
     AgGridAngular,
     AgGridModule,
     SharedModule,
@@ -37,8 +38,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'; /
     MatInputModule,
     MatIconModule,
     MatProgressSpinnerModule,
-  ],
-  exports: [DashboardComponent, ViewArticleComponent, EditArticleComponent]
+    MatChip
+  ]
 })
-
 export class AdminDashboardModule { }

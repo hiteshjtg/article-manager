@@ -72,3 +72,17 @@
     }
   }
 }
+
+
+
+.quill-editor-container {
+  margin: 1rem 0;
+}
+
+.quill-editor {
+  min-height: 200px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background: #fff;
+  padding: 0.5rem;
+}

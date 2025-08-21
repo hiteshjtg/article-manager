@@ -1,26 +1,31 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Article } from '../../../models/articles';
-import { ArticlesService } from '../../../core/services/article.service';
-import { FetchOwnArticlesService } from '../../../core/services/fetch-own-articles.service';
+import { ArticlesStateService } from '../../../core/state/articles/articles-state.service';
+import { Subscription, from } from 'rxjs';
+
+declare var Quill: any;
 
 @Component({
   selector: 'app-edit-article',
   templateUrl: './edit-article.component.html',
   styleUrls: ['./edit-article.component.scss']
 })
-export class EditArticleComponent implements OnInit {
+export class EditArticleComponent implements OnInit, AfterViewInit, OnDestroy {
+
   editForm: FormGroup;
   isSubmitting = false;
   isLoading = true;
   articleToEdit: Article | null = null;
   articleId: string | null = null;
+  quillEditor: any;
+
+  private subscription: Subscription | null = null;
 
   constructor(
     private fb: FormBuilder,
-    private articlesService: ArticlesService,
-    private fetchArticlesService: FetchOwnArticlesService,
+    private articlesState: ArticlesStateService,
     private route: ActivatedRoute,
     private router: Router
   ) {
@@ -34,76 +39,108 @@ export class EditArticleComponent implements OnInit {
     });
   }
 
-  async ngOnInit() {
+  ngOnInit() {
     this.articleId = this.route.snapshot.paramMap.get('id');
-    
-    if (this.articleId) {
-      await this.loadArticle();
-    } else {
+
+    if (!this.articleId) {
       console.error('No article ID provided');
       this.router.navigate(['/dashboard']);
+      return;
     }
-  }
 
-  async loadArticle() {
-    try {
-      this.isLoading = true;
-      const articles = await this.fetchArticlesService.getArticles();
-      this.articleToEdit = articles.find(article => article.id === this.articleId) || null;
-      
+    this.isLoading = true;
+
+    // Convert Promise to Observable using 'from' for reactive subscription
+    this.subscription = from(this.articlesState.getArticleById(this.articleId)).subscribe((article: Article | undefined) => {
+      this.articleToEdit = article || null;
+      this.isLoading = false;
+
       if (this.articleToEdit) {
         this.prefillForm();
+        setTimeout(() => this.initializeQuillEditor(), 100);
       } else {
-        console.error('Article not found');
-        this.router.navigate(['/dashboard']);
+        console.warn('Article not found in state yet');
+        this.articlesState.loadArticles(); // fallback
       }
-    } catch (error) {
-      console.error('Error loading article:', error);
-      this.router.navigate(['/dashboard']);
-    } finally {
-      this.isLoading = false;
-    }
+    });
   }
 
   private prefillForm() {
-    if (this.articleToEdit) {
-      this.editForm.patchValue({
-        title: this.articleToEdit.title || '',
-        description: this.articleToEdit.description || '',
-        shortDescription: this.articleToEdit.shortDescription || '',
-        authorName: this.articleToEdit.authorName || '',
-        articleImageUrl: this.articleToEdit.articleImageUrl || '',
-        tags: this.articleToEdit.tags?.join(', ') || '',
-      });
+    if (!this.articleToEdit) return;
+
+    this.editForm.patchValue({
+      title: this.articleToEdit.title || '',
+      description: this.articleToEdit.description || '',
+      shortDescription: this.articleToEdit.shortDescription || '',
+      authorName: this.articleToEdit.authorName || '',
+      articleImageUrl: this.articleToEdit.articleImageUrl || '',
+      tags: this.articleToEdit.tags || [],
+    });
+  }
+
+  ngAfterViewInit(): void {
+    if (!this.quillEditor) {
+      this.initializeQuillEditor();
     }
   }
 
-  async onSubmit() {
-    if (this.editForm.valid && this.articleToEdit) {
-      this.isSubmitting = true;
-      try {
-        const formData = this.editForm.value;
-        
-        const updatedData = {
-          title: formData.title,
-          description: formData.description,
-          shortDescription: formData.shortDescription,
-          authorName: formData.authorName,
-          articleImageUrl: formData.articleImageUrl || '',
-          tags: formData.tags ? formData.tags.split(',').map((tag: string) => tag.trim()) : [],
-          lastModifiedDate: new Date().toISOString(),
-        };
+  private initializeQuillEditor(): void {
+    const editorEl = document.getElementById('quill-editor');
+    if (!editorEl || typeof Quill === 'undefined') {
+      console.error('Quill editor element not found or Quill library not loaded');
+      return;
+    }
 
-        await this.articlesService.updateArticle(this.articleToEdit.id, updatedData);
-        
-        this.router.navigate(['/dashboard']);
-        
-      } catch (error) {
-        console.error('Error updating article:', error);
-        alert('Failed to update article. Please try again.');
-      } finally {
-        this.isSubmitting = false;
+    this.quillEditor = new Quill(editorEl, {
+      theme: 'snow',
+      placeholder: 'Enter detailed article description...',
+      modules: {
+        toolbar: [
+          ['bold', 'italic', 'underline', 'strike'],
+          [{ 'header': [1, 2, 3, false] }],
+          [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+          ['blockquote', 'code-block'],
+          ['link', 'image'],
+          ['clean']
+        ]
       }
+    });
+
+    const initialContent = this.editForm.get('description')?.value || '';
+    this.quillEditor.root.innerHTML = initialContent;
+
+    this.quillEditor.on('text-change', () => {
+      const html = this.quillEditor.root.innerHTML;
+      this.editForm.get('description')?.setValue(html);
+      this.editForm.get('description')?.markAsTouched();
+    });
+  }
+  
+
+  async onSubmit() {
+    if (!this.articleToEdit || this.editForm.invalid) return;
+
+    this.isSubmitting = true;
+
+    const formData = this.editForm.value;
+    const updatedData: Partial<Article> = {
+      title: formData.title,
+      description: formData.description,
+      shortDescription: formData.shortDescription,
+      authorName: formData.authorName,
+      articleImageUrl: formData.articleImageUrl || '',
+      tags: formData.tags || [],
+      lastModifiedDate: new Date(), // <- fix: assign Date object
+    };
+
+    try {
+      this.articlesState.updateArticle(this.articleToEdit.id, updatedData);
+      this.router.navigate(['/dashboard']);
+    } catch (error) {
+      console.error('Error updating article:', error);
+      alert('Failed to update article. Please try again.');
+    } finally {
+      this.isSubmitting = false;
     }
   }
 
@@ -111,6 +148,9 @@ export class EditArticleComponent implements OnInit {
     this.router.navigate(['/dashboard']);
   }
 
+  ngOnDestroy(): void {
+    this.subscription?.unsubscribe();
+  }
 
   get title() { return this.editForm.get('title'); }
   get description() { return this.editForm.get('description'); }

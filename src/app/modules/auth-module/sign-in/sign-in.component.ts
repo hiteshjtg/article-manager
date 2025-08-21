@@ -8,9 +8,7 @@ import { Router } from '@angular/router';
   templateUrl: './sign-in.component.html',
   styleUrls: ['./sign-in.component.scss'],
 })
-
 export class SignInComponent {
-  
   signinForm: FormGroup;
   responseMsg = '';
 
@@ -25,9 +23,19 @@ export class SignInComponent {
     });
   }
 
+  // Getters for form controls
+  get email() {
+    return this.signinForm.get('email');
+  }
+
+  get password() {
+    return this.signinForm.get('password');
+  }
+
   onSubmit(): void {
     if (this.signinForm.valid) {
-      const { email, password } = this.signinForm.value;
+      const email = this.email?.value;
+      const password = this.password?.value;
 
       this.authService
         .loginUser(email, password)
@@ -41,8 +49,7 @@ export class SignInComponent {
     }
   }
 
-
-  GoSignUp(){
-    this.router.navigate(['/signup'])
+  GoSignUp() {
+    this.router.navigate(['/signup']);
   }
 }

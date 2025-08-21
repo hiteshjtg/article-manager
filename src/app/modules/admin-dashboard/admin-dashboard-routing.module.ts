@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ViewArticleComponent } from './view-article/view-article.component';
-import { CreateArticleComponent } from './create-article/create-article.component';
 import { EditArticleComponent } from './edit-article-drawer/edit-article.component';
 
 const routes: Routes = [

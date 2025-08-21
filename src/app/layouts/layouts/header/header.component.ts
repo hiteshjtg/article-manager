@@ -1,26 +1,47 @@
 import { Component, Inject, PLATFORM_ID } from '@angular/core';
 import { Router } from '@angular/router';
 import { isPlatformBrowser } from '@angular/common';
+import { AuthserviceService } from '../../../core/services/auth.service';
+import { Observable, of } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styleUrl: './header.component.scss',
+  styleUrls: ['./header.component.scss'],// fixed typo from 'styleUrl'
 })
-
 export class HeaderComponent {
-  constructor(@Inject(PLATFORM_ID) private platformId: object,
-  private router: Router
-  ) {}
+  isUserLoggedIn$: Observable<boolean> = of(false); // default false
+
+  constructor(
+    @Inject(PLATFORM_ID) private platformId: object,
+    private router: Router,
+    private authService: AuthserviceService
+  ) {
+    if (isPlatformBrowser(this.platformId)) {
+      // Map Firebase UID to boolean for reactive login status
+      this.isUserLoggedIn$ = this.authService.getUserId$().pipe(
+        map((uid: string | null) => !!uid)
+      );
+    }
+  }
 
   goToDashboard() {
     this.router.navigate(['/dashboard']);
   }
 
-  isUserLoggedIn(): boolean {
-    if (isPlatformBrowser(this.platformId)) {
-    return !!localStorage.getItem('userToken'); //true if id is available.
-    }
-    return false;
+  goToHome() {
+    this.router.navigate(['/home']);
+  }
+
+  logout(): void {
+    this.authService.logoutUser()
+      .then((msg) => {
+        console.log(msg);
+        this.router.navigate(['/signin']);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   }
 }

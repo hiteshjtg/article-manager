@@ -7,4 +7,19 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  pointer-events: none; /* Add this to the host */
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.3);
+  z-index: 9999;
+  pointer-events: none; /* Add this - crucial fix */
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

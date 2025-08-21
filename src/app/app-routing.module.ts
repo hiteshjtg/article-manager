@@ -2,10 +2,8 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomePageComponent } from './modules/home-module/home-page/home-page.component';
 import { authGuard } from './core/guards/auth.guard';
-import { DashboardComponent } from './modules/admin-dashboard/dashboard/dashboard.component';
-import { EditArticleComponent } from './modules/admin-dashboard/edit-article-drawer/edit-article.component';
-import { ViewArticleComponent } from './modules/admin-dashboard/view-article/view-article.component';
 import { guestGuard } from './core/guards/guest.guard';
+
 
 const routes: Routes = [
   {
@@ -14,18 +12,8 @@ const routes: Routes = [
     canActivate: [guestGuard]
   },
   {
-    path: 'dashboard', 
-    component: DashboardComponent, 
-    canActivate: [authGuard]
-  },
-  {
-    path: 'article/:id', 
-    component: ViewArticleComponent, 
-    canActivate: [authGuard]
-  },
-  {
-    path: 'article/:id/edit',
-    component: EditArticleComponent,
+    path: 'dashboard',
+    loadChildren: () => import('./modules/admin-dashboard/admin-dashboard.module').then(m => m.AdminDashboardModule),
     canActivate: [authGuard]
   },
   {
@@ -48,9 +36,9 @@ const routes: Routes = [
   }
 ];
 
+
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-
 export class AppRoutingModule {}

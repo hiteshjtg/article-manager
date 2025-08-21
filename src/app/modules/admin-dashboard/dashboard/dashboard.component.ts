@@ -6,7 +6,7 @@ import { Article } from '../../../models/articles';
 import { FetchOwnArticlesService } from '../../../core/services/fetch-own-articles.service';
 import { Router } from '@angular/router';
 import { ArticlesService } from '../../../core/services/article.service';
-
+import { firstValueFrom } from 'rxjs';
 
 
 ModuleRegistry.registerModules([AllCommunityModule]);
@@ -27,7 +27,6 @@ export class DashboardComponent implements OnInit {
     this.isDrawerOpen = true;
   }
 
-
   closeDrawer = () => {
     this.isDrawerOpen = false;
   };
@@ -40,17 +39,20 @@ export class DashboardComponent implements OnInit {
   ) {}
 
 
-  async ngOnInit(): Promise<void> {
-    this.isLoading = true;
-    try {
-      this.articles = await this.articlesFetchService.getArticles();
-    } catch (error) {
-      console.error('Error fetching articles on admin page:', error);
-    } finally {
-      this.isLoading = false;
+//   async ngOnInit(): Promise<void> {
+//   this.isLoading = true;
+//   try {
+//     // Call the method with () and convert Observable to Promise
+//     this.articles = await firstValueFrom(this.articlesFetchService.getArticles$());
+//   } catch (error) {
+//     console.error('Error fetching articles on admin page:', error);
+//   } finally {
+//     this.isLoading = false;
+//   }
+// }
+    async ngOnInit(): Promise<void> {
+      this.articles = await firstValueFrom(this.articlesFetchService.getArticles$());
     }
-  }
-
 
   navigateToEdit(articleId: string) {
     this.router.navigate(['/article', articleId, 'edit']);

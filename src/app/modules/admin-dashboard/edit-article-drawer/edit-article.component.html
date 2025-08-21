@@ -28,12 +28,19 @@
         </mat-form-field>
 
 
-        <mat-form-field appearance="outline" class="full-width">
+        <!-- <mat-form-field appearance="outline" class="full-width">
           <mat-label>Description</mat-label>
           <textarea matInput formControlName="description" rows="4" placeholder="Enter detailed article description"></textarea>
           <mat-error *ngIf="description?.hasError('required')">Description is required</mat-error>
           <mat-error *ngIf="description?.hasError('minlength')">Description must be at least 10 characters</mat-error>
-        </mat-form-field>
+        </mat-form-field> -->
+        <div class="quill-editor-container">
+          <label class="quill-label">Description</label>
+          <div id="quill-editor" class="quill-editor"></div>
+          <mat-error *ngIf="description?.hasError('required')">Description is required</mat-error>
+          <mat-error *ngIf="description?.hasError('minlength')">Description must be at least 10 characters</mat-error>
+        </div>
+
 
         <mat-form-field appearance="outline" class="full-width">
           <mat-label>Author Name</mat-label>
@@ -48,11 +55,13 @@
         </mat-form-field>
 
 
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Tags</mat-label>
-          <input matInput formControlName="tags" placeholder="Enter tags separated by commas">
-          <mat-hint>Separate tags with commas (e.g., javascript, angular, web)</mat-hint>
-        </mat-form-field>
+        <mat-label>Tags</mat-label>
+
+        <app-chip-input 
+          [tags]="editForm.get('tags')?.value" 
+          (newTagEvent)="editForm.get('tags')?.setValue($event)">
+        </app-chip-input>
+
 
 
         <div class="form-actions">

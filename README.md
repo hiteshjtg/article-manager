@@ -1,41 +1,80 @@
-# Admin Dashboard - Medium2
+Medium2 – Developer Documentation (dev branch)
+Medium2 is a full-stack web application inspired by Medium, built to support Authentication (Sign In/Sign Up), Homepage (show all articles to users) and an Admin Dashboard for managing articles.
 
-This branch (`adminDashboard`) contains the **Admin Dashboard** implementation for our Medium2 platform.  
-It provides CRUD-related functionality for managing articles, specifically **View**, **Edit**, and **Delete** operations.
+This branch (dev) contains the latest merged features, including:
 
----
+Authentication (Sign In / Sign Up)
 
-##  Features
+Admin Dashboard with CRUD operations
 
-### 1. **View Article**
-- Clicking the **View** icon in the table opens the article in **read-only mode**.
-- Implemented using route path parameters:  
-    article/:id
+Home Page with card components
 
-### 2. **Edit Article**
-- Clicking the **Edit** icon navigates to the edit page:
-    article/:id/edit
+Shared services and UI components
 
-### 3. **Delete Article**
-- Clicking the **Delete** icon prompts for confirmation.
-- If confirmed:
-- Deletes the article using the `ArticlesService.deleteArticle()` method.
-- Updates the AG Grid table in real-time by removing the deleted article from the `articles[]` array.
+🚀 Features
 
-### 4. **Add Article**
-- Clicking the **Add Article** icon open a drawer.
-- If form is filled correctly as per validations and requirements:
-- Add the article using the `ArticlesService.AddArticle()` method.
+🔐 Authentication
+Sign Up: Allows users to create a new account with form validation.
+
+Sign In: Existing users can log in securely.
+
+Integrated with backend authentication services (JWT/session support as per backend implementation).
+
+🖥️ Admin Dashboard
+Article Listing:
+
+Uses AG Grid for tabular display of all articles
+
+Columns: Title, Last Modified Date, Description, Author, Actions
+
+CRUD Operations:
+
+View Article → Opens in read-only mode (route: /article/:id)
+
+Edit Article → Navigates to edit page (route: /article/:id/edit)
+
+Delete Article → Prompts confirmation, deletes via ArticlesService.deleteArticle(), updates table in real-time
+
+Add Article → Opens a right-side Material Drawer, validates form, adds article via ArticlesService.addArticle(), auto-closes on success
+
+🛠️ Tech Stack
+Frontend: Angular (with Material UI & AG Grid)
+
+Backend: Node.js / Express (assumed, configurable API)
+
+Authentication: JWT-based (configurable)
+
+UI Components: Angular Material, AG Grid
+
+⚙️ Project Setup
+1. Clone the repository
+bash
+git clone <repo-url>
+cd medium2
+git checkout dev
+2. Install dependencies
+bash
+npm install
+
+4. Run the development server
+ng serve
+Runs the frontend in development mode at:
+=> http://localhost:4200
 
 
-## UI Components
+📌 Routes Overview
+Auth
 
-- **AG Grid** for listing articles with columns:
-- Title
-- Last Modified Date
-- Description
-- Author Name
-- Actions: View, Edit, Delete
-- **Material Drawer** for creating a new article:
-- Opens from the right side.
-- Closes automatically after successful creation.
+/signin → Login Page
+
+/signup → Register Page
+
+Admin Dashboard
+
+/dashboard → List of articles
+
+/article/:id → View article
+
+/article/:id/edit → Edit article
+
+/add-article (Drawer opens via button in dashboard)

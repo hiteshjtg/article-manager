@@ -11,12 +11,8 @@
         placeholder="Enter your email"
         required
       />
-      <mat-error *ngIf="signinForm.get('email')?.hasError('required')"
-        >Email is required</mat-error
-      >
-      <mat-error *ngIf="signinForm.get('email')?.hasError('email')"
-        >Invalid email</mat-error
-      >
+      <mat-error *ngIf="email?.hasError('required')">Email is required</mat-error>
+      <mat-error *ngIf="email?.hasError('email')">Invalid email</mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="fill" class="full-width">
@@ -28,9 +24,7 @@
         placeholder="Enter your password"
         required
       />
-      <mat-error *ngIf="signinForm.get('password')?.hasError('required')"
-        >Password is required</mat-error
-      >
+      <mat-error *ngIf="password?.hasError('required')">Password is required</mat-error>
     </mat-form-field>
 
     <button
@@ -44,8 +38,9 @@
 
     <p class="response-error">{{ responseMsg }}</p>
   </form>
-    <div class="signup-section">
-      <span>Don't have an account?</span>
-      <button mat-button color="primary" (click)="GoSignUp()">Sign Up</button>
-    </div>
+
+  <div class="signup-section">
+    <span>Don't have an account?</span>
+    <button mat-button color="primary" (click)="GoSignUp()">Sign Up</button>
+  </div>
 </mat-card>
