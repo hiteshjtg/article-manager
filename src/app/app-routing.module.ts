@@ -9,17 +9,20 @@ const routes: Routes = [
   {
     path: 'auth',
     loadChildren: () => import('./modules/auth-module/auth-module.module').then(m => m.AuthModuleModule),
-    canActivate: [guestGuard]
+    canActivate: [guestGuard],
+    canLoad: [guestGuard]
   },
   {
     path: 'dashboard',
     loadChildren: () => import('./modules/admin-dashboard/admin-dashboard.module').then(m => m.AdminDashboardModule),
-    canActivate: [authGuard]
+    canActivate: [authGuard],
+    canLoad: [authGuard]
   },
   {
     path: 'home',
     component: HomePageComponent,
     canActivate: [authGuard],
+    canLoad: [authGuard]
   },
   { 
     path: '', 

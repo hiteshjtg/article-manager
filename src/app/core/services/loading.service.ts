@@ -4,7 +4,7 @@ import { BehaviorSubject } from 'rxjs';
 @Injectable({ providedIn: 'root' })
 export class LoadingService {
   private loadingSubject = new BehaviorSubject<boolean>(false);
-  private activeRequests = 0; // Track active requests
+  private activeRequests = 0;
   loading$ = this.loadingSubject.asObservable();
 
   show() {

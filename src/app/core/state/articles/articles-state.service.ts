@@ -25,12 +25,12 @@ export class ArticlesStateService {
   }
 
   async loadArticles() {
-    this.loadingService.show();   // ✅ start loading
+    this.loadingService.show();
     try {
       const articles = await firstValueFrom(this.articlesService.getArticles());
       this.store.setArticles(articles);
     } finally {
-      this.loadingService.hide(); // ✅ stop loading (even if error happens)
+      this.loadingService.hide();
     }
   }
 
@@ -81,128 +81,4 @@ export class ArticlesStateService {
       this.loadingService.hide();
     }
   }
-
-  // ----------------------
-  // Reactive Versions
-  // ----------------------
-
-  loadArticlesReactive(): Observable<void> {
-    return new Observable(observer => {
-      this.loadingService.show();
-      this.articlesService.getArticles().subscribe({
-        next: (articles) => {
-          this.store.setArticles(articles);
-          observer.next();
-          observer.complete();
-          this.loadingService.hide();
-        },
-        error: (error) => {
-          this.loadingService.hide();
-          observer.error(error);
-        }
-      });
-    });
-  }
-
-  addArticleReactive(article: Article): Observable<void> {
-    return new Observable(observer => {
-      this.loadingService.show();
-      this.articlesService.addArticle(
-        article.uid,
-        article.title,
-        article.description,
-        article.shortDescription,
-        article.authorName,
-        article.articleImageUrl,
-        article.tags,
-        article.lastModifiedDate.toString()
-      ).subscribe({
-        next: () => {
-          this.loadArticlesReactive().subscribe({
-            next: () => {
-              observer.next();
-              observer.complete();
-              this.loadingService.hide();
-            },
-            error: (error) => {
-              this.loadingService.hide();
-              observer.error(error);
-            }
-          });
-        },
-        error: (error) => {
-          this.loadingService.hide();
-          observer.error(error);
-        }
-      });
-    });
-  }
-
-  updateArticleReactive(id: string, updatedData: Partial<Article>): Observable<void> {
-    return new Observable(observer => {
-      this.loadingService.show();
-      this.articlesService.updateArticle(id, updatedData).subscribe({
-        next: () => {
-          this.loadArticlesReactive().subscribe({
-            next: () => {
-              observer.next();
-              observer.complete();
-              this.loadingService.hide();
-            },
-            error: (error) => {
-              this.loadingService.hide();
-              observer.error(error);
-            }
-          });
-        },
-        error: (error) => {
-          this.loadingService.hide();
-          observer.error(error);
-        }
-      });
-    });
-  }
-
-  deleteArticleReactive(id: string): Observable<void> {
-    return new Observable(observer => {
-      this.loadingService.show();
-      this.articlesService.deleteArticle(id).subscribe({
-        next: () => {
-          this.loadArticlesReactive().subscribe({
-            next: () => {
-              observer.next();
-              observer.complete();
-              this.loadingService.hide();
-            },
-            error: (error) => {
-              this.loadingService.hide();
-              observer.error(error);
-            }
-          });
-        },
-        error: (error) => {
-          this.loadingService.hide();
-          observer.error(error);
-        }
-      });
-    });
-  }
-
-  getArticleByIdReactive(id: string): Observable<Article> {
-    this.loadingService.show();
-    return new Observable(observer => {
-      this.articlesService.getArticlesById(id).subscribe({
-        next: (article) => {
-          observer.next(article);
-          observer.complete();
-          this.loadingService.hide();
-        },
-        error: (error) => {
-          this.loadingService.hide();
-          observer.error(error);
-        }
-      });
-    });
-  }
 }
-

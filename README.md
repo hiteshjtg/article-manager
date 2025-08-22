@@ -49,7 +49,7 @@ UI Components: Angular Material, AG Grid
 ⚙️ Project Setup
 1. Clone the repository
 bash
-git clone <repo-url>
+git clone [www.github.com/hiteshjtg/articles-manager](https://github.com/hiteshjtg/article-manager)
 cd medium2
 git checkout dev
 2. Install dependencies

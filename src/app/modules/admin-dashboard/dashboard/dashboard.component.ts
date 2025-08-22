@@ -11,6 +11,7 @@ import { firstValueFrom } from 'rxjs';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
+
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -39,20 +40,9 @@ export class DashboardComponent implements OnInit {
   ) {}
 
 
-//   async ngOnInit(): Promise<void> {
-//   this.isLoading = true;
-//   try {
-//     // Call the method with () and convert Observable to Promise
-//     this.articles = await firstValueFrom(this.articlesFetchService.getArticles$());
-//   } catch (error) {
-//     console.error('Error fetching articles on admin page:', error);
-//   } finally {
-//     this.isLoading = false;
-//   }
-// }
-    async ngOnInit(): Promise<void> {
+  async ngOnInit(): Promise<void> {
       this.articles = await firstValueFrom(this.articlesFetchService.getArticles$());
-    }
+  }
 
   navigateToEdit(articleId: string) {
     this.router.navigate(['/article', articleId, 'edit']);

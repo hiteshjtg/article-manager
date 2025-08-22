@@ -23,6 +23,5 @@ import { AuthRoutingModule } from './auth-routing.module';
     MatInputModule,
     MatFormFieldModule,
   ],
-  // exports: [SignUpComponent, SignInComponent], //not required if Lazy Loading
 })
 export class AuthModuleModule {}

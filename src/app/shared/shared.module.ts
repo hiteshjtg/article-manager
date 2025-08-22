@@ -15,10 +15,12 @@ import {LiveAnnouncer} from '@angular/cdk/a11y';
 import { TagButtonComponent } from './tag-button/tag-button.component';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatButtonModule} from '@angular/material/button';
+import { HeaderComponent } from './header/header.component';
+import { FooterComponent } from './footer/footer.component';
 
 
 @NgModule({
-  declarations: [PaginatorComponent, SpinnerComponent, ChipInputComponent, TagButtonComponent],
+  declarations: [PaginatorComponent, SpinnerComponent, ChipInputComponent, TagButtonComponent, HeaderComponent, FooterComponent], //'HeaderComponent' does not appear to be an NgModule, Component, Directive, or Pipe class.(-996003)
   imports: [
     CommonModule,
     MatPaginatorModule,
@@ -29,7 +31,9 @@ import {MatButtonModule} from '@angular/material/button';
     MatDividerModule,
     MatButtonModule
   ],
-  exports: [PaginatorComponent, SpinnerComponent, ChipInputComponent, TagButtonComponent]
+  exports: [PaginatorComponent, SpinnerComponent, ChipInputComponent, TagButtonComponent, HeaderComponent, FooterComponent] //'HeaderComponent' does not appear to be an NgModule, Component, Directive, or Pipe class.(-996003)
+
 })
+
 
 export class SharedModule {}

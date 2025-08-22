@@ -4,7 +4,6 @@ import { BrowserModule, provideClientHydration } from '@angular/platform-browser
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeModuleModule } from './modules/home-module/home-module.module';
-import { LayoutsModule } from './layouts/layouts/layouts.module';
 import { AuthModuleModule } from './modules/auth-module/auth-module.module';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
@@ -26,7 +25,6 @@ import { HttpErrorInterceptorService } from './core/services/http-error-intercep
     BrowserModule,
     AppRoutingModule,
     HomeModuleModule,
-    LayoutsModule,
     AuthModuleModule,
     FireModuleModule,
     AdminDashboardModule,

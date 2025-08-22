@@ -50,7 +50,7 @@ export class EditArticleComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.isLoading = true;
 
-    // Convert Promise to Observable using 'from' for reactive subscription
+   
     this.subscription = from(this.articlesState.getArticleById(this.articleId)).subscribe((article: Article | undefined) => {
       this.articleToEdit = article || null;
       this.isLoading = false;
@@ -60,7 +60,7 @@ export class EditArticleComponent implements OnInit, AfterViewInit, OnDestroy {
         setTimeout(() => this.initializeQuillEditor(), 100);
       } else {
         console.warn('Article not found in state yet');
-        this.articlesState.loadArticles(); // fallback
+        this.articlesState.loadArticles();
       }
     });
   }
@@ -130,7 +130,7 @@ export class EditArticleComponent implements OnInit, AfterViewInit, OnDestroy {
       authorName: formData.authorName,
       articleImageUrl: formData.articleImageUrl || '',
       tags: formData.tags || [],
-      lastModifiedDate: new Date(), // <- fix: assign Date object
+      lastModifiedDate: new Date(),
     };
 
     try {

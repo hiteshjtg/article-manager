@@ -28,18 +28,20 @@ export class SignUpComponent {
     if (this.signupForm.valid) {
       const { name, email, password } = this.signupForm.value;
 
-      this.authService
-        .registerUser(name, email, password)
-        .then((userCred) => {
+      this.authService.registerUser(name, email, password).subscribe({
+        next: (msg) => {
+          console.log(msg);
           this.router.navigate(['/home']);
-        })
-        .catch((err) => {
-          this.responseMsg = err;
-        });
+        },
+        error: (err) => {
+          this.responseMsg = err.message;
+        }
+      });
     }
   }
 
-  GoSignIn(){ //just for redirection
+
+  GoSignIn(){
     this.router.navigate(['/signin'])
   }
 

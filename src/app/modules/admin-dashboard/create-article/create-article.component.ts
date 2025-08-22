@@ -13,7 +13,6 @@ declare var Quill: any;
   templateUrl: './create-article.component.html',
   styleUrl: './create-article.component.scss'
 })
-
 export class CreateArticleComponent implements AfterViewInit, OnInit {
 
   @Input() closeDrawerFunction!: () => void;
@@ -28,7 +27,6 @@ export class CreateArticleComponent implements AfterViewInit, OnInit {
   };
 
   quillEditor: any;
-  currentTags: string[] = [];
   isSubmitting = false;
 
   constructor(
@@ -38,7 +36,8 @@ export class CreateArticleComponent implements AfterViewInit, OnInit {
   ) {}
 
   ngOnInit() {
-    this.article.tags = this.currentTags;
+    // Initialize tags as empty array
+    this.article.tags = [];
   }
 
   ngAfterViewInit(): void {
@@ -72,20 +71,12 @@ export class CreateArticleComponent implements AfterViewInit, OnInit {
     });
   }
 
-
-  addTag(tagInput: HTMLInputElement) {
-    const tag = tagInput.value.trim();
-    if (tag && !this.currentTags.includes(tag)) {
-      this.currentTags.push(tag);
-    }
-    tagInput.value = '';
-    this.article.tags = this.currentTags;
+  // Handle tags update from chip component
+  onTagsChange(newTags: string[]) {
+    this.article.tags = newTags;
   }
 
-  removeTag(tag: string) {
-    this.currentTags = this.currentTags.filter(t => t !== tag);
-    this.article.tags = this.currentTags;
-  }
+  // Remove the old addTag and removeTag methods as they're now handled by the chip component
 
   async submitForm(form: NgForm) {
     if (form.invalid) return;
@@ -108,7 +99,7 @@ export class CreateArticleComponent implements AfterViewInit, OnInit {
         shortDescription: this.article.shortDescription || '',
         authorName: this.article.authorName || '',
         articleImageUrl: this.article.articleImageUrl || '',
-        tags: this.currentTags,
+        tags: this.article.tags || [],
         lastModifiedDate: new Date()
       };
 
@@ -117,14 +108,29 @@ export class CreateArticleComponent implements AfterViewInit, OnInit {
 
       console.log('Article added successfully');
       form.resetForm();
-      this.currentTags = [];
+      
+      // Reset article object including tags
+      this.article = {
+        title: '',
+        description: '',
+        shortDescription: '',
+        authorName: '',
+        articleImageUrl: '',
+        tags: [],
+      };
 
       if (this.quillEditor) {
-        try { this.quillEditor.setContents([]); } catch { this.quillEditor.setText(''); }
+        try { 
+          this.quillEditor.setContents([]); 
+        } catch { 
+          this.quillEditor.setText(''); 
+        }
       }
 
       if (this.closeDrawerFunction) {
-        try { this.closeDrawerFunction(); } catch {}
+        try { 
+          this.closeDrawerFunction(); 
+        } catch {}
       }
 
     } catch (error) {

@@ -9,9 +9,7 @@ import { AuthserviceService } from './auth.service';
 @Injectable({
   providedIn: 'root',
 })
-
 export class ArticlesService {
-
   constructor(
     private fireStore: Firestore,
     private authService: AuthserviceService
@@ -28,7 +26,7 @@ export class ArticlesService {
     lastModifiedDate: string,
   ): Observable<void> {
     const articlesCollection = collection(this.fireStore, 'articles');
-    
+
     return from(addDoc(articlesCollection, {
       uid,
       title,
@@ -83,7 +81,7 @@ export class ArticlesService {
 
   deleteArticle(documentId: string): Observable<void> {
     const articleDocRef = doc(this.fireStore, `articles/${documentId}`);
-    
+
     return from(deleteDoc(articleDocRef)).pipe(
       map(() => {
         console.log(`Article with ID ${documentId} deleted successfully`);
@@ -97,24 +95,22 @@ export class ArticlesService {
 
   getArticles(): Observable<Article[]> {
     const articlesCollection = collection(this.fireStore, 'articles');
-    
+
     return from(getDocs(articlesCollection)).pipe(
       map((querySnapshot: QuerySnapshot<DocumentData>) => {
         return querySnapshot.docs.map((doc) => {
           const data = doc.data();
-          const lastModifiedDate = (
-            data['lastModifiedDate'] as Timestamp
-          )?.toDate();
-          const tags: string[] = Array.isArray(data['tags']) ? data['tags'] : [];
+          const lastModifiedDate = (data.lastModifiedDate as Timestamp)?.toDate();
+          const tags: string[] = Array.isArray(data.tags) ? data.tags : [];
 
           return {
             id: doc.id,
-            uid: data['uid'],
-            title: data['title'],
-            articleImageUrl: data['articleImageUrl'],
-            shortDescription: data['shortDescription'],
-            authorName: data['authorName'],
-            description: data['description'],
+            uid: data.uid,
+            title: data.title,
+            articleImageUrl: data.articleImageUrl,
+            shortDescription: data.shortDescription,
+            authorName: data.authorName,
+            description: data.description,
             tags,
             lastModifiedDate,
           } as Article;
@@ -129,7 +125,7 @@ export class ArticlesService {
 
   getArticlesById(id: string): Observable<Article> {
     const docRef = doc(this.fireStore, 'articles', id);
-    
+
     return from(getDoc(docRef)).pipe(
       map((docSnap) => {
         if (!docSnap.exists()) {
@@ -137,19 +133,17 @@ export class ArticlesService {
         }
 
         const data = docSnap.data();
-        const lastModifiedDate = (
-          data['lastModifiedDate'] as Timestamp
-        )?.toDate();
-        const tags: string[] = Array.isArray(data['tags']) ? data['tags'] : [];
+        const lastModifiedDate = (data.lastModifiedDate as Timestamp)?.toDate();
+        const tags: string[] = Array.isArray(data.tags) ? data.tags : [];
 
         return {
           id: docSnap.id,
-          uid: data['uid'],
-          title: data['title'],
-          articleImageUrl: data['articleImageUrl'],
-          shortDescription: data['shortDescription'],
-          authorName: data['authorName'],
-          description: data['description'],
+          uid: data.uid,
+          title: data.title,
+          articleImageUrl: data.articleImageUrl,
+          shortDescription: data.shortDescription,
+          authorName: data.authorName,
+          description: data.description,
           tags,
           lastModifiedDate,
         } as Article;
