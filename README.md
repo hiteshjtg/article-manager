@@ -1,28 +1,80 @@
-# Medium2
+Medium2 – Developer Documentation (dev branch)
+Medium2 is a full-stack web application inspired by Medium, built to support Authentication (Sign In/Sign Up), Homepage (show all articles to users) and an Admin Dashboard for managing articles.
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.17.
+This branch (dev) contains the latest merged features, including:
 
-## Development server
+Authentication (Sign In / Sign Up)
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+Admin Dashboard with CRUD operations
 
-## Code scaffolding
+Home Page with card components
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Shared services and UI components
 
-## Build
+🚀 Features
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+🔐 Authentication
+Sign Up: Allows users to create a new account with form validation.
 
-## Running unit tests
+Sign In: Existing users can log in securely.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Integrated with backend authentication services (JWT/session support as per backend implementation).
 
-## Running end-to-end tests
+🖥️ Admin Dashboard
+Article Listing:
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+Uses AG Grid for tabular display of all articles
 
-## Further help
+Columns: Title, Last Modified Date, Description, Author, Actions
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
-# article-manager
+CRUD Operations:
+
+View Article → Opens in read-only mode (route: /article/:id)
+
+Edit Article → Navigates to edit page (route: /article/:id/edit)
+
+Delete Article → Prompts confirmation, deletes via ArticlesService.deleteArticle(), updates table in real-time
+
+Add Article → Opens a right-side Material Drawer, validates form, adds article via ArticlesService.addArticle(), auto-closes on success
+
+🛠️ Tech Stack
+Frontend: Angular (with Material UI & AG Grid)
+
+Backend: Node.js / Express (assumed, configurable API)
+
+Authentication: JWT-based (configurable)
+
+UI Components: Angular Material, AG Grid
+
+⚙️ Project Setup
+1. Clone the repository
+bash
+git clone [www.github.com/hiteshjtg/articles-manager](https://github.com/hiteshjtg/article-manager)
+cd medium2
+git checkout dev
+2. Install dependencies
+bash
+npm install
+
+4. Run the development server
+ng serve
+Runs the frontend in development mode at:
+=> http://localhost:4200
+
+
+📌 Routes Overview
+Auth
+
+/signin → Login Page
+
+/signup → Register Page
+
+Admin Dashboard
+
+/dashboard → List of articles
+
+/article/:id → View article
+
+/article/:id/edit → Edit article
+
+/add-article (Drawer opens via button in dashboard)

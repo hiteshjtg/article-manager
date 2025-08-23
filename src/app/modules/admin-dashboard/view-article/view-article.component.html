@@ -1,0 +1,39 @@
+<div class="article-container" *ngIf="article">
+  <div class="title-edit-wrapper">
+    <h2 class="article-title">{{ article.title }}</h2>
+
+    <button *ngIf="isOwner()" (click)="navigateToEdit(article.id)" class="edit-button" aria-label="Edit Article">
+      <span class="material-symbols-outlined">edit</span>
+    </button>
+
+    <div class="tags-container">
+      <span *ngFor="let tag of article.tags" class="tag-chip">
+        <button
+          style="background-color: black"
+          mat-raised-button
+          color="primary"
+          matBadge="8"
+          matBadgePosition="before"
+          matBadgeColor="accent"
+        >
+          {{ tag }}
+        </button>
+      </span>
+    </div>
+  </div>
+
+  <h4 class="article-author">By: {{ article.authorName }}</h4>
+  <p class="article-date">
+    Last Updated on: {{ article.lastModifiedDate | date: 'mediumDate' }}
+  </p>
+
+  <img [src]="article.articleImageUrl" alt="Article Image" class="article-image" />
+
+  <div class="article-description" [innerHTML]="article.description"></div>
+</div>
+
+<app-spinner *ngIf="isLoading"></app-spinner>
+
+<div class="no-article" *ngIf="!isLoading && !article">
+  Article not found.
+</div>

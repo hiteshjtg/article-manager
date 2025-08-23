@@ -1,0 +1,80 @@
+<div class="create-article-container">
+  <h2>Add Article</h2>
+  
+  <form #articleForm="ngForm" (ngSubmit)="submitForm(articleForm)">
+    
+    <mat-form-field class="full-width">
+      <mat-label>Title</mat-label>
+      <input matInput name="title" [(ngModel)]="article.title" required minlength="3">
+      <mat-error *ngIf="articleForm.submitted && !article.title">Title is required</mat-error>
+      <mat-error *ngIf="articleForm.submitted && article.title && article.title.length < 3">Title must be at least 3 characters</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Short Description</mat-label>
+      <textarea matInput name="shortDescription" [(ngModel)]="article.shortDescription" required minlength="5" rows="3"></textarea>
+      <mat-error *ngIf="articleForm.submitted && !article.shortDescription">Short description is required</mat-error>
+      <mat-error *ngIf="articleForm.submitted && article.shortDescription && article.shortDescription.length < 5">Short description must be at least 5 characters</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Author Name</mat-label>
+      <input matInput name="authorName" [(ngModel)]="article.authorName" required>
+      <mat-error *ngIf="articleForm.submitted && !article.authorName">Author name is required</mat-error>
+    </mat-form-field>
+
+   <mat-form-field class="full-width">
+      <mat-label>Article Image URL</mat-label>
+      <input 
+        matInput 
+        name="articleImageUrl" 
+        [(ngModel)]="article.articleImageUrl" 
+        type="url"
+        pattern="https?://.+">
+      <mat-error *ngIf="articleForm.submitted && article.articleImageUrl && !articleForm.controls['articleImageUrl']?.valid">
+        Please enter a valid URL (must start with http:// or https://)
+      </mat-error>
+    </mat-form-field>
+
+
+    <!-- Tags section with chip input -->
+    <div class="tags-section">
+      <label class="tags-label">Tags</label>
+      <app-chip-input 
+        [tags]="article.tags || []" 
+        (newTagEvent)="onTagsChange($event)">
+      </app-chip-input>
+    </div>
+
+    <!-- Quill editor for description -->
+    <div class="description-field">
+      <label class="description-label">Description *</label>
+      <div id="quill-editor" class="quill-editor-container"></div>
+      <input type="hidden" name="description" [(ngModel)]="article.description" required>
+      <div class="description-error" *ngIf="articleForm.submitted && !article.description">
+        Description is required
+      </div>
+    </div>
+
+    <!-- Action buttons -->
+    <div class="actions">
+      <button 
+        mat-raised-button 
+        color="primary" 
+        type="submit" 
+        [disabled]="articleForm.invalid || isSubmitting">
+        <mat-icon *ngIf="isSubmitting">hourglass_empty</mat-icon>
+        {{ isSubmitting ? 'Saving...' : 'Save Article' }}
+      </button>
+      <button 
+        mat-button 
+        color="warn" 
+        type="button" 
+        (click)="closeDrawerFunction()"
+        [disabled]="isSubmitting">
+        Cancel
+      </button>
+    </div>
+    
+  </form>
+</div>

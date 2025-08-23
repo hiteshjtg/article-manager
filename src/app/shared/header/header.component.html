@@ -1,0 +1,27 @@
+<nav class="medium-navbar">
+  <div class="nav-left">
+    <button class="button-no-border" (click)="goToHome()">
+    <img
+      src="assets/images/medium_logo.png"
+      alt="Logo"
+      class="logo"
+    />
+    </button>
+  </div>
+
+  <div class="nav-right">
+    <button class="button-no-border" *ngIf="isUserLoggedIn$ | async" (click)="goToDashboard()">
+
+      <img
+        src="assets/images/user_dashboard_logo.jpg"
+        alt="User Icon"
+        class="user-icon"
+      />
+    </button>
+
+    <button class="material-symbols-outlined button-no-border" (click)="logout()" *ngIf="isUserLoggedIn$ | async">
+      logout
+    </button>
+
+  </div>
+</nav>

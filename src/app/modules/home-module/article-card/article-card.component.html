@@ -1,0 +1,39 @@
+<button (click)="navigateToView(article.id)">
+<mat-card class="example-card">
+  <mat-card-header>
+    <mat-card-title>{{ article.authorName }}</mat-card-title>
+
+    <mat-card-subtitle
+      >Last Updated:
+      {{ article.lastModifiedDate | date: "mediumDate" }}</mat-card-subtitle
+    >
+  </mat-card-header>
+
+  <img
+    mat-card-image
+    [src]="article.articleImageUrl"
+    [alt]="article.shortDescription"
+  />
+
+  <mat-card-content>
+    <p>
+      {{ article.shortDescription }}
+    </p>
+
+    <div class="tags-container">
+      <span *ngFor="let tag of article.tags" class="tag-chip">
+        <button
+          style="background-color: black"
+          mat-raised-button
+          color="primary"
+          matBadge="8"
+          matBadgePosition="before"
+          matBadgeColor="accent"
+        >
+          {{ tag }}
+        </button>
+      </span>
+    </div>
+  </mat-card-content>
+</mat-card>
+</button>
